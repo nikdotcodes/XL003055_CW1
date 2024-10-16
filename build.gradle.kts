@@ -33,49 +33,6 @@ application {
     mainClass = "codes.nikdot.Pipeline"
 }
 
-jreleaser {
-    project {
-        name = "pipeline"
-        version = "2024.10.2"
-        versionPattern = "CALVER:YYYY.0M.MINOR"
-        description = "Pipeline to read .txt files and extract information"
-        authors = listOf("Nik Walne")
-        tags = listOf("cli", "data processing")
-        license = "Apache-2.0"
-        links {
-            homepage = "https://nik.codes"
-            license = "https://www.apache.org/licenses/LICENSE-2.0"
-        }
-        copyright = "2024 NikDotCodes LTD"
-    }
-    release {
-        github {
-            name = "XL003055_CW1"
-            host = "github.com"
-            username = "nikdotcodes"
-            token = "TOKEN_GOES_HERE"
-            apiEndpoint = "https://api.github.com"
-            overwrite = true
-        }
-    }
-    checksum {
-        name = "{{projectName}}-{{projectVersion}}_checksums.txt"
-        algorithm("SHA-256")
-        algorithm("MD5")
-        individual = true
-        artifacts = true
-        files = true
-    }
-    distributions {
-    }
-    this.distributions.create("pipeline") {
-        artifact {
-            path.set(file("build/libs/pipeline.jar"))
-        }
-        distributionType = Distribution.DistributionType.SINGLE_JAR
-    }
-}
-
 group = "codes.nikdot"
 
 repositories {
