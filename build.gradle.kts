@@ -1,5 +1,3 @@
-import org.jreleaser.model.Distribution
-
 plugins {
     id("com.gradleup.shadow") version "8.3.3"
     id("org.jreleaser") version "1.14.0"
@@ -16,16 +14,19 @@ java {
     )
 }
 
+tasks.named("distZip").configure {dependsOn("shadowJar")}
+tasks.named("distTar").configure {dependsOn("shadowJar")}
+tasks.named("startScripts").configure {dependsOn("shadowJar")}
+tasks.named("startShadowScripts").configure {dependsOn("jar")}
 tasks {
-    jar {
+    shadowJar {
         manifest {
             attributes(
                 "Main-Class" to "codes.nikdot.Pipeline"
             )
         }
-    }
-    shadowJar {
-        manifest.inheritFrom(jar.get().manifest)
+        archiveClassifier.set("")
+        archiveVersion.set("")
     }
 }
 
