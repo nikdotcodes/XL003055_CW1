@@ -9,8 +9,9 @@ import picocli.CommandLine.Parameters;
  * It uses the Picocli library to handle command-line arguments and orchestrates
  * the process of loading a text file, lemmatising its content, and saving the output to a JSON file.
  */
-@Command(name = "pipeline", mixinStandardHelpOptions = true, version = "pipeline 2024.1001",
-        description = "Runs the pipeline to load a text file, lemmanise processing, and outputs a json file.")
+@Command(name = "pipeline", mixinStandardHelpOptions = true, version = "pipeline 2024.1002", description = "Runs through " +
+        "a series of pipeline blocks (B1 & B2) to read documents from a .txt file, lemmatise & tokenise the text, and " +
+        "outputs the original & changes to a json file.")
 public class Pipeline implements Runnable {
 
     /**
@@ -26,13 +27,24 @@ public class Pipeline implements Runnable {
     String outputFile;
 
     /**
-     * The main logic of the pipeline. It performs the following steps:
-     * 1. Creates a temporary JSON file name by replacing the .txt extension of the input file with _temp.json.
-     * 2. Initializes instances of B1TextLoader and B2Lemmatiser.
-     * 3. Sets the input and output file paths for both the text loader and the lemmatiser.
-     * 4. Prints a message indicating the start of processing.
-     * 5. Loads the text file and saves its content to the temporary JSON file.
-     * 6. Lemmatises the content of the temporary JSON file and saves the result to the output file.
+     * The entry point of the application. It uses Picocli to parse the command-line arguments
+     * and execute the Pipeline command.
+     *
+     * @param args Command-line arguments
+     */
+    public static void main(String[] args) {
+        int exitCode = new CommandLine(new Pipeline()).execute(args);
+        System.exit(exitCode);
+    }
+
+    /**
+     * The main logic of the pipeline. It performs the following steps:<br>
+     * 1. Creates a temporary JSON file name by replacing the .txt extension of the input file with _temp.json.<br>
+     * 2. Initializes instances of B1TextLoader and B2Lemmatiser.<br>
+     * 3. Sets the input and output file paths for both the text loader and the lemmatiser.<br>
+     * 4. Prints a message indicating the start of processing.<br>
+     * 5. Loads the text file and saves its content to the temporary JSON file.<br>
+     * 6. Lemmatises the content of the temporary JSON file and saves the result to the output file.<br>
      * 7. Prints a message indicating the completion of processing.
      */
     @Override
@@ -55,16 +67,5 @@ public class Pipeline implements Runnable {
         lem.startLemmanisation();
 
         System.out.println("Processing complete.");
-    }
-
-    /**
-     * The entry point of the application. It uses Picocli to parse the command-line arguments
-     * and execute the Pipeline command.
-     *
-     * @param args Command-line arguments
-     */
-    public static void main(String[] args) {
-        int exitCode = new CommandLine(new Pipeline()).execute(args);
-        System.exit(exitCode);
     }
 }
