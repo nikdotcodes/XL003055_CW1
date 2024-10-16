@@ -46,10 +46,6 @@ public class B2Lemmatiser {
         JSONIOHelper jsonIO = new JSONIOHelper();
         jsonIO.loadJSONStructure(inputFile);
         documents = jsonIO.getDocumentsFromJSONStructure();
-        for (String docId : documents.keySet()) {
-            String docContent = documents.get(docId);
-            String lemmanisedDoc = lemmaniseSingleDocument(docContent);
-        }
         for(Map.Entry<String, String> entry: documents.entrySet()) {
             System.out.println("Reading Document: " + entry.getKey());
             String lemmanisedDoc = lemmaniseSingleDocument(entry.getValue());

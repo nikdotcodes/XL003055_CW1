@@ -38,3 +38,6 @@ build/
 
 # JReleaser files
 out/jreleaser/
+
+dropzone/
+outputs/
