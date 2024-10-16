@@ -1,6 +1,5 @@
 plugins {
     id("com.gradleup.shadow") version "8.3.3"
-    id("org.jreleaser") version "1.14.0"
     id("java")
     id("java-library")
     id("application")
@@ -28,7 +27,11 @@ tasks {
         archiveClassifier.set("")
         archiveVersion.set("")
     }
+    javadoc {
+        setDestinationDir(file("build/docs/javadoc"))
+    }
 }
+
 
 application {
     mainClass = "codes.nikdot.Pipeline"
