@@ -11,21 +11,50 @@ import java.util.concurrent.ConcurrentHashMap;
  * It reads documents from a JSON file, lemmatises the content, and saves the lemmatised documents back to a JSON file.
  */
 public class B2Lemmatiser {
+    /**
+     * A ConcurrentHashMap to store the documents loaded from the JSON file.
+     * The key is a string identifier for each document, and the value is the
+     * content of the document.
+     */
     ConcurrentHashMap<String, String> documents = new ConcurrentHashMap<>();
+
+    /**
+     * A ConcurrentHashMap to store the lemmatised documents.
+     * The key is a string identifier for each document, and the value is the
+     * lemmatised content of the document.
+     */
     ConcurrentHashMap<String, String> lemmatisedDocuments = new ConcurrentHashMap<>();
+
+    /**
+     * The path to the input JSON file.
+     */
     private String inputFile;
+
+    /**
+     * The path to the output JSON file.
+     */
     private String outputFile;
 
+    /**
+     * Sets the path to the input JSON file.
+     *
+     * @param inputFile The path to the input JSON file
+     */
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
     }
 
+    /**
+     * Sets the path to the output JSON file.
+     *
+     * @param outputFile The path to the output JSON file
+     */
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
     }
 
     /**
-     * The main method to start the lemmatization process.
+     * The main method to start the lemmatisation process.
      *
      * @param args Command line arguments
      */
@@ -38,8 +67,8 @@ public class B2Lemmatiser {
     }
 
     /**
-     * Starts the lemmatization process on the specified JSON file.
-     * It loads the JSON structure, retrieves documents, lemmatizes them, and saves the lemmatized documents.
+     * Starts the lemmatisation process on the specified JSON file.
+     * It loads the JSON structure, retrieves documents, lemmatises them, and saves the lemmatised documents.
      */
     void startLemmanisation() {
         System.out.println("Starting Lemmanisation on " + inputFile + "...");
@@ -58,11 +87,11 @@ public class B2Lemmatiser {
     }
 
     /**
-     * Lemmatizes a single document.
-     * It removes punctuation, converts text to lowercase, and lemmatizes the words.
+     * Lemmatises a single document.
+     * It removes punctuation, converts text to lowercase, and lemmatises the words.
      *
-     * @param text The text of the document to lemmatize
-     * @return The lemmatized text
+     * @param text The text of the document to lemmatise
+     * @return The lemmatised text
      */
     String lemmaniseSingleDocument(String text) {
         System.out.println("Lemmanising Document...");

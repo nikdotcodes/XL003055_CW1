@@ -28,7 +28,14 @@ public class JSONIOHelper {
      */
     JSONObject lemmasObject;
 
+    /**
+     * A hash map to store document identifiers and their contents.
+     */
     ConcurrentHashMap<String, String> documents = new ConcurrentHashMap<>();
+
+    /**
+     * A hash map to store document identifiers and their corresponding lemmas.
+     */
     ConcurrentHashMap<String, String> lemmas = new ConcurrentHashMap<>();
 
     /**
@@ -113,6 +120,11 @@ public class JSONIOHelper {
         }
     }
 
+    /**
+     * Deletes the specified JSON file.
+     *
+     * @param fileName The name of the file to be deleted.
+     */
     public void deleteJSONStructure(String fileName) {
         File fileToDelete = new File(fileName);
         if (fileToDelete.delete()) {
@@ -123,10 +135,10 @@ public class JSONIOHelper {
     }
 
     /**
-     * Retrieves lemmas from the JSON structure.
-     * The lemmas are extracted from the lemmas object and returned as a ConcurrentHashMap.
+     * Retrieves documents from the JSON structure.
+     * The documents are extracted from the document object and returned as a ConcurrentHashMap.
      *
-     * @return A ConcurrentHashMap containing document identifiers as keys and lemma contents as values
+     * @return A ConcurrentHashMap containing document identifiers as keys and document contents as values
      */
     public ConcurrentHashMap<String, String> getDocumentsFromJSONStructure() {
         for (String key : (Iterable<String>)documentsObject.keySet()) {

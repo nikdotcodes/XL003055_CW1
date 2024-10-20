@@ -16,13 +16,31 @@ public class B1TextLoader {
      * content of the document.
      */
     ConcurrentHashMap<String, String> documents = new ConcurrentHashMap<>();
+
+    /**
+     * The path to the input text file.
+     */
     private String inputFile;
+
+    /**
+     * The path to the output JSON file.
+     */
     private String outputFile;
 
+    /**
+     * Sets the path to the input text file.
+     *
+     * @param inputFile The path to the input text file
+     */
     public void setInputFile(String inputFile) {
         this.inputFile = inputFile;
     }
 
+    /**
+     * Sets the path to the output JSON file.
+     *
+     * @param outputFile The path to the output JSON file
+     */
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
     }
