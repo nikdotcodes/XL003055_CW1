@@ -6,7 +6,6 @@ import cc.mallet.pipe.TokenSequence2FeatureSequence;
 import cc.mallet.pipe.iterator.CsvIterator;
 import cc.mallet.topics.ParallelTopicModel;
 import cc.mallet.types.InstanceList;
-import cc.mallet.util.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,15 +16,34 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
+/**
+ * The B4TopicModelling class provides methods to perform topic modeling on lemmatised documents.
+ * It reads lemmas from a JSON file, saves them to a flat file, and runs the topic modeling process.
+ */
 public class B4TopicModelling {
 
+    /**
+     * A ConcurrentHashMap to store the lemmatized documents.
+     * The key is a string identifier for each document, and the value is the lemmatised content of the document.
+     */
     ConcurrentHashMap<String, String> lemmas = new ConcurrentHashMap<>();
 
+    /**
+     * The main method to start the topic modeling process.
+     *
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         B4TopicModelling topicModelling = new B4TopicModelling();
         topicModelling.startTopicModelling("outputs/ComplexTextFile.json");
     }
 
+    /**
+     * Starts the topic modeling process from the specified JSON file.
+     * It loads the JSON structure, retrieves lemmas, saves them to a flat file, and runs the topic modeling process.
+     *
+     * @param fileName The path to the JSON file containing the lemmatised documents
+     */
     private void startTopicModelling(String fileName) {
         JSONIOHelper json = new JSONIOHelper();
         json.loadJSONStructure(fileName);
@@ -34,6 +52,12 @@ public class B4TopicModelling {
         runTopicModelling("outputs/topicdata.txt", 10, 8, 500);
     }
 
+    /**
+     * Saves the lemmatised documents to a flat file.
+     *
+     * @param flatFile The path to the flat file to save the lemmas
+     * @param lemmas   A ConcurrentHashMap containing the lemmatised documents
+     */
     private void saveLemmasToFlatFile(String flatFile, ConcurrentHashMap<String, String> lemmas) {
         try (FileWriter writer = new FileWriter(flatFile)) {
             for (Map.Entry<String, String> entry : lemmas.entrySet()) {
@@ -45,6 +69,14 @@ public class B4TopicModelling {
         }
     }
 
+    /**
+     * Runs the topic modeling process using the specified parameters.
+     *
+     * @param flatFile     The path to the flat file containing the lemmas
+     * @param nTopics      The number of topics to generate
+     * @param nThreads     The number of threads to use
+     * @param nIterations  The number of iterations to run
+     */
     private void runTopicModelling(String flatFile, int nTopics, int nThreads, int nIterations) {
         ArrayList pipeList = new ArrayList();
         // Pipes: tokenize, map to features
