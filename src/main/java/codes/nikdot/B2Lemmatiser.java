@@ -78,6 +78,7 @@ public class B2Lemmatiser {
         for(Map.Entry<String, String> entry: documents.entrySet()) {
             System.out.println("Reading Document: " + entry.getKey());
             String lemmanisedDoc = lemmaniseSingleDocument(entry.getValue());
+            // TODO: Remove stop words here
             lemmatisedDocuments.put(entry.getKey(), lemmanisedDoc);
         }
         jsonIO.addLemmasToJSONStructure(lemmatisedDocuments);
