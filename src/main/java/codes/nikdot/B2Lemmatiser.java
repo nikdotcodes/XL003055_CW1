@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,21 +85,20 @@ public class B2Lemmatiser {
         JSONIOHelper jsonIO = new JSONIOHelper();
         jsonIO.loadJSONStructure(inputFile);
         documents = jsonIO.getDocumentsFromJSONStructure();
-        // TODO: Parallelise this
-        for (Map.Entry<String, String> entry : documents.entrySet()) {
-            System.out.println("Reading Document: " + entry.getKey());
-            String lemmanisedDoc = lemmaniseSingleDocument(entry.getValue());
+
+        documents.forEach(2, (key, value) -> {
+            System.out.println("Reading Document: " + key);
+            String lemmanisedDoc = lemmaniseSingleDocument(value);
             ArrayList<String> allLems = Stream.of(lemmanisedDoc.toLowerCase()
                     .split(" "))
                     .filter(word -> !ArrayUtils.contains(stopWords, word))
                     .collect(Collectors.toCollection(ArrayList::new));
             lemmanisedDoc = String.join(" ", allLems);
+            lemmatisedDocuments.put(key, lemmanisedDoc);
+        });
 
-            lemmatisedDocuments.put(entry.getKey(), lemmanisedDoc);
-        }
         jsonIO.addLemmasToJSONStructure(lemmatisedDocuments);
         jsonIO.saveJSONStructure(outputFile);
-
         jsonIO.deleteJSONStructure(inputFile);
     }
 
