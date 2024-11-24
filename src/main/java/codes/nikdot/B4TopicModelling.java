@@ -49,7 +49,7 @@ public class B4TopicModelling {
         json.loadJSONStructure(fileName);
         lemmas = json.getLemmasFromJSONStructure();
         saveLemmasToFlatFile("outputs/topicdata.txt", lemmas);
-        runTopicModelling("outputs/topicdata.txt", 10, 8, 500);
+        runTopicModelling("outputs/topicdata.txt", 10, 8, 2000);
     }
 
     /**

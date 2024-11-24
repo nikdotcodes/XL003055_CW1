@@ -1,10 +1,16 @@
 package codes.nikdot;
 
-import edu.stanford.nlp.simple.*;
+import edu.stanford.nlp.simple.Sentence;
+import edu.stanford.nlp.util.ArrayUtils;
 
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The B2Lemmatiser class provides methods to lemmatise documents.
@@ -35,6 +41,24 @@ public class B2Lemmatiser {
      */
     private String outputFile;
 
+    private String[] stopWords;
+
+    /**
+     * The main method to start the lemmatisation process.
+     *
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) {
+        B2Lemmatiser lem = new B2Lemmatiser();
+        lem.setInputFile(args[0]);
+        lem.setOutputFile(args[1]);
+
+        System.out.println("Loading stop words...");
+        lem.loadStopWords();
+
+        lem.startLemmanisation();
+    }
+
     /**
      * Sets the path to the input JSON file.
      *
@@ -54,19 +78,6 @@ public class B2Lemmatiser {
     }
 
     /**
-     * The main method to start the lemmatisation process.
-     *
-     * @param args Command line arguments
-     */
-    public static void main(String[] args) {
-        B2Lemmatiser lem = new B2Lemmatiser();
-        lem.setInputFile(args[0]);
-        lem.setOutputFile(args[1]);
-
-        lem.startLemmanisation();
-    }
-
-    /**
      * Starts the lemmatisation process on the specified JSON file.
      * It loads the JSON structure, retrieves documents, lemmatises them, and saves the lemmatised documents.
      */
@@ -75,10 +86,16 @@ public class B2Lemmatiser {
         JSONIOHelper jsonIO = new JSONIOHelper();
         jsonIO.loadJSONStructure(inputFile);
         documents = jsonIO.getDocumentsFromJSONStructure();
-        for(Map.Entry<String, String> entry: documents.entrySet()) {
+        // TODO: Parallelise this
+        for (Map.Entry<String, String> entry : documents.entrySet()) {
             System.out.println("Reading Document: " + entry.getKey());
             String lemmanisedDoc = lemmaniseSingleDocument(entry.getValue());
-            // TODO: Remove stop words here
+            ArrayList<String> allLems = Stream.of(lemmanisedDoc.toLowerCase()
+                    .split(" "))
+                    .filter(word -> !ArrayUtils.contains(stopWords, word))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            lemmanisedDoc = String.join(" ", allLems);
+
             lemmatisedDocuments.put(entry.getKey(), lemmanisedDoc);
         }
         jsonIO.addLemmasToJSONStructure(lemmatisedDocuments);
@@ -106,5 +123,15 @@ public class B2Lemmatiser {
         System.out.println("Lemmanisation Complete!");
 
         return String.join(" ", lemmas);
+    }
+
+    void loadStopWords() {
+        try {
+            stopWords = Files.readAllLines(Paths.get("./dropzone/stopwords-en.txt")).toArray(new String[0]);
+            System.out.println("Stop words loaded: " + stopWords.length);
+        } catch (Exception e) {
+            System.out.println("Error loading stop words");
+            e.printStackTrace();
+        }
     }
 }

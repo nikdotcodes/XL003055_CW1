@@ -64,6 +64,9 @@ public class Pipeline implements Runnable {
         loader.loadTextFile();
         loader.saveDocumentsToJSON();
 
+        System.out.println("Loading stop words...");
+        lem.loadStopWords();
+
         lem.startLemmanisation();
 
         System.out.println("Processing complete.");
