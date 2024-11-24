@@ -28,6 +28,17 @@ public class B4TopicModelling {
      */
     ConcurrentHashMap<String, String> lemmas = new ConcurrentHashMap<>();
 
+    private String lemmaFile;
+    private String topicModelFile;
+
+    public void setLemmaFile(String lemmaFile) {
+        this.lemmaFile = lemmaFile;
+    }
+
+    public void setTopicModelFile(String topicModelFile) {
+        this.topicModelFile = topicModelFile;
+    }
+
     /**
      * The main method to start the topic modeling process.
      *
@@ -35,21 +46,20 @@ public class B4TopicModelling {
      */
     public static void main(String[] args) {
         B4TopicModelling topicModelling = new B4TopicModelling();
-        topicModelling.startTopicModelling("outputs/ComplexTextFile.json");
+        topicModelling.startTopicModelling();
     }
 
     /**
      * Starts the topic modeling process from the specified JSON file.
      * It loads the JSON structure, retrieves lemmas, saves them to a flat file, and runs the topic modeling process.
      *
-     * @param fileName The path to the JSON file containing the lemmatised documents
      */
-    private void startTopicModelling(String fileName) {
+    public void startTopicModelling() {
         JSONIOHelper json = new JSONIOHelper();
-        json.loadJSONStructure(fileName);
+        json.loadJSONStructure(lemmaFile);
         lemmas = json.getLemmasFromJSONStructure();
-        saveLemmasToFlatFile("outputs/topicdata.txt", lemmas);
-        runTopicModelling("outputs/topicdata.txt", 10, 8, 2000);
+        saveLemmasToFlatFile(topicModelFile, lemmas);
+        runTopicModelling(topicModelFile, 10, 8, 2000);
     }
 
     /**
@@ -72,10 +82,10 @@ public class B4TopicModelling {
     /**
      * Runs the topic modeling process using the specified parameters.
      *
-     * @param flatFile     The path to the flat file containing the lemmas
-     * @param nTopics      The number of topics to generate
-     * @param nThreads     The number of threads to use
-     * @param nIterations  The number of iterations to run
+     * @param flatFile    The path to the flat file containing the lemmas
+     * @param nTopics     The number of topics to generate
+     * @param nThreads    The number of threads to use
+     * @param nIterations The number of iterations to run
      */
     private void runTopicModelling(String flatFile, int nTopics, int nThreads, int nIterations) {
         ArrayList pipeList = new ArrayList();

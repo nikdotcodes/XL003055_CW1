@@ -30,6 +30,21 @@ public class B3DescriptiveStatistics {
      */
     ConcurrentHashMap<String, Integer> documentWordCounts = new ConcurrentHashMap<>();
 
+    private String corpusWordCountFile;
+    private String documentWordCountFile;
+    private String lemmasFile;
+
+    public void setCorpusWordCountFile(String corpusWordCountFile) {
+        this.corpusWordCountFile = corpusWordCountFile;
+    }
+
+    public void setDocumentWordCountFile(String documentWordCountFile) {
+        this.documentWordCountFile = documentWordCountFile;
+    }
+
+    public void setLemmasFile(String lemmasFile) {
+        this.lemmasFile = lemmasFile;
+    }
     /**
      * The main method to start the descriptive statistics generation process.
      *
@@ -37,19 +52,18 @@ public class B3DescriptiveStatistics {
      */
     public static void main(String[] args) {
         B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
-        descriptiveStatistics.startCreatingStatistics("outputs/ComplexTextFile.json");
+        descriptiveStatistics.startCreatingStatistics();
     }
 
     /**
      * Starts the process of creating descriptive statistics from the specified JSON file.
      * It loads the JSON structure, retrieves lemmas, counts words, and outputs the statistics to CSV files.
      *
-     * @param fileName The path to the JSON file containing the lemmatised documents
      */
-    private void startCreatingStatistics(String fileName) {
+    public void startCreatingStatistics() {
         System.out.println("Creating statistics...");
         JSONIOHelper json = new JSONIOHelper();
-        json.loadJSONStructure("outputs/ComplexTextFile.json");
+        json.loadJSONStructure(lemmasFile);
         lemmas = json.getLemmasFromJSONStructure();
         for (Map.Entry<String, String> entry : lemmas.entrySet()) {
             String lem = entry.getValue();
@@ -59,8 +73,8 @@ public class B3DescriptiveStatistics {
         }
         countWordsInCorpus(lemmas);
         countWordInDocuments(lemmas);
-        outputCountsAsCSV(lemmaCounts, "outputs/lemmasCounts.csv");
-        outputCountsAsCSV(documentWordCounts, "outputs/documentWordCounts.csv");
+        outputCountsAsCSV(lemmaCounts, corpusWordCountFile);
+        outputCountsAsCSV(documentWordCounts, documentWordCountFile);
     }
 
     /**

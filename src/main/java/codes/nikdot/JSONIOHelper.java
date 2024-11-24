@@ -3,9 +3,9 @@ package codes.nikdot;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -141,7 +141,7 @@ public class JSONIOHelper {
      * @return A ConcurrentHashMap containing document identifiers as keys and document contents as values
      */
     public ConcurrentHashMap<String, String> getDocumentsFromJSONStructure() {
-        for (String key : (Iterable<String>)documentsObject.keySet()) {
+        for (String key : (Iterable<String>) documentsObject.keySet()) {
             documents.put(key, (String) documentsObject.get(key));
         }
         System.out.println("Documents retrieved from JSON: " + documents.size());
@@ -155,7 +155,7 @@ public class JSONIOHelper {
      * @return A ConcurrentHashMap containing document identifiers as keys and lemma contents as values
      */
     public ConcurrentHashMap<String, String> getLemmasFromJSONStructure() {
-        for (String key : (Iterable<String>)lemmasObject.keySet()) {
+        for (String key : (Iterable<String>) lemmasObject.keySet()) {
             lemmas.put(key, (String) lemmasObject.get(key));
         }
         System.out.println("Lemmas retrieved from JSON: " + lemmas.size());

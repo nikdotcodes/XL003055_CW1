@@ -90,7 +90,7 @@ public class B2Lemmatiser {
             System.out.println("Reading Document: " + key);
             String lemmanisedDoc = lemmaniseSingleDocument(value);
             ArrayList<String> allLems = Stream.of(lemmanisedDoc.toLowerCase()
-                    .split(" "))
+                            .split(" "))
                     .filter(word -> !ArrayUtils.contains(stopWords, word))
                     .collect(Collectors.toCollection(ArrayList::new));
             lemmanisedDoc = String.join(" ", allLems);

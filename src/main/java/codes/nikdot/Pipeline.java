@@ -50,6 +50,9 @@ public class Pipeline implements Runnable {
     @Override
     public void run() {
         String workingFile = inputFile.replace(".txt", "_temp.json");
+        String corpusWordCountFile = outputFile.replace(".json", "_CorpusWordCount.csv");
+        String documentWordCountFile = outputFile.replace(".json", "_DocumentWordCount.csv");
+        String topicModelFile = outputFile.replace(".json", "_TopicData.txt");
 
         B1TextLoader loader = new B1TextLoader();
         B2Lemmatiser lem = new B2Lemmatiser();
@@ -68,6 +71,17 @@ public class Pipeline implements Runnable {
         lem.loadStopWords();
 
         lem.startLemmanisation();
+
+        B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
+        descriptiveStatistics.setLemmasFile(outputFile);
+        descriptiveStatistics.setCorpusWordCountFile(corpusWordCountFile);
+        descriptiveStatistics.setDocumentWordCountFile(documentWordCountFile);
+        descriptiveStatistics.startCreatingStatistics();
+
+        B4TopicModelling topicModelling = new B4TopicModelling();
+        topicModelling.setLemmaFile(outputFile);
+        topicModelling.setTopicModelFile(topicModelFile);
+        topicModelling.startTopicModelling();
 
         System.out.println("Processing complete.");
     }

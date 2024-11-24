@@ -28,6 +28,19 @@ public class B1TextLoader {
     private String outputFile;
 
     /**
+     * The main method to run the B1TextLoader.
+     *
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) {
+        B1TextLoader loader = new B1TextLoader();
+        loader.setInputFile(args[0]);
+        loader.setOutputFile(args[1]);
+        loader.loadTextFile();
+        loader.saveDocumentsToJSON();
+    }
+
+    /**
      * Sets the path to the input text file.
      *
      * @param inputFile The path to the input text file
@@ -43,19 +56,6 @@ public class B1TextLoader {
      */
     public void setOutputFile(String outputFile) {
         this.outputFile = outputFile;
-    }
-
-    /**
-     * The main method to run the B1TextLoader.
-     *
-     * @param args Command line arguments
-     */
-    public static void main(String[] args) {
-        B1TextLoader loader = new B1TextLoader();
-        loader.setInputFile(args[0]);
-        loader.setOutputFile(args[1]);
-        loader.loadTextFile();
-        loader.saveDocumentsToJSON();
     }
 
     /**
