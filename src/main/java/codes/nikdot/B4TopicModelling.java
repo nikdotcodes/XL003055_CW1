@@ -28,8 +28,23 @@ public class B4TopicModelling {
      */
     ConcurrentHashMap<String, String> lemmas = new ConcurrentHashMap<>();
 
+    private ParallelTopicModel model;
+
     private String lemmaFile;
     private String topicModelFile;
+
+    /**
+     * The main method to start the topic modeling process.
+     *
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) {
+        B4TopicModelling topicModelling = new B4TopicModelling();
+        topicModelling.setLemmaFile("outputs/ComplexLemmas.json");
+        topicModelling.setTopicModelFile("outputs/TopicModel.txt");
+        topicModelling.startTopicModelling();
+        topicModelling.exportTopicModel();
+    }
 
     public void setLemmaFile(String lemmaFile) {
         this.lemmaFile = lemmaFile;
@@ -40,26 +55,16 @@ public class B4TopicModelling {
     }
 
     /**
-     * The main method to start the topic modeling process.
-     *
-     * @param args Command line arguments
-     */
-    public static void main(String[] args) {
-        B4TopicModelling topicModelling = new B4TopicModelling();
-        topicModelling.startTopicModelling();
-    }
-
-    /**
      * Starts the topic modeling process from the specified JSON file.
      * It loads the JSON structure, retrieves lemmas, saves them to a flat file, and runs the topic modeling process.
-     *
      */
     public void startTopicModelling() {
         JSONIOHelper json = new JSONIOHelper();
         json.loadJSONStructure(lemmaFile);
         lemmas = json.getLemmasFromJSONStructure();
         saveLemmasToFlatFile(topicModelFile, lemmas);
-        runTopicModelling(topicModelFile, 10, 8, 2000);
+        runTopicModelling(topicModelFile, 10, 8, 100);
+        exportTopicModel();
     }
 
     /**
@@ -116,6 +121,31 @@ public class B4TopicModelling {
         } catch (Exception e) {
             System.out.println("Failed to estimate model!");
             System.exit(1);
+        }
+        System.out.println("Model estimated!");
+        this.model = model;
+    }
+
+    private void exportTopicModel() {
+        String topicModelFile = lemmaFile.replace(".json", "_TopicModelResults.csv");
+        String columns = "topic,word1,word2,word3,word4,word5,word6,word7,word8,word9,word10";
+        Object[][] topWords = model.getTopWords(10);
+
+        try (FileWriter writer = new FileWriter(topicModelFile)) {
+            writer.append(columns);
+            writer.append(System.lineSeparator());
+            for (int topicNum = 0; topicNum < model.numTopics; topicNum++) {
+                String line = String.valueOf(topicNum);
+                for (int i = 0; i < 10; i++) {
+                    line = String.join(",", line, (String) topWords[topicNum][i]);
+                }
+                writer.append(line);
+                writer.append(System.lineSeparator());
+            }
+            System.out.println("Topic Model CSV file saved successfully!");
+        } catch (Exception e) {
+            System.out.println("Topic Model CSV file save failed!");
+            throw new RuntimeException(e);
         }
     }
 }
