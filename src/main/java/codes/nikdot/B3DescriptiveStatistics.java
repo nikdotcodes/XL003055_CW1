@@ -34,6 +34,16 @@ public class B3DescriptiveStatistics {
     private String documentWordCountFile;
     private String lemmasFile;
 
+    /**
+     * The main method to start the descriptive statistics generation process.
+     *
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) {
+        B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
+        descriptiveStatistics.startCreatingStatistics();
+    }
+
     public void setCorpusWordCountFile(String corpusWordCountFile) {
         this.corpusWordCountFile = corpusWordCountFile;
     }
@@ -45,20 +55,10 @@ public class B3DescriptiveStatistics {
     public void setLemmasFile(String lemmasFile) {
         this.lemmasFile = lemmasFile;
     }
-    /**
-     * The main method to start the descriptive statistics generation process.
-     *
-     * @param args Command line arguments
-     */
-    public static void main(String[] args) {
-        B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
-        descriptiveStatistics.startCreatingStatistics();
-    }
 
     /**
      * Starts the process of creating descriptive statistics from the specified JSON file.
      * It loads the JSON structure, retrieves lemmas, counts words, and outputs the statistics to CSV files.
-     *
      */
     public void startCreatingStatistics() {
         System.out.println("Creating statistics...");
@@ -82,7 +82,7 @@ public class B3DescriptiveStatistics {
      *
      * @param lemmas A ConcurrentHashMap containing the lemmatised documents
      */
-    private void countWordsInCorpus(ConcurrentHashMap<String, String> lemmas) {
+    void countWordsInCorpus(ConcurrentHashMap<String, String> lemmas) {
         for (Map.Entry<String, String> entry : lemmas.entrySet()) {
             String lem = entry.getValue();
             String[] words = lem.split(" ");
@@ -102,7 +102,7 @@ public class B3DescriptiveStatistics {
      * @param counts   A ConcurrentHashMap containing the word counts
      * @param fileName The path to the CSV file to save the word counts
      */
-    private void outputCountsAsCSV(ConcurrentHashMap<String, Integer> counts, String fileName) {
+    void outputCountsAsCSV(ConcurrentHashMap<String, Integer> counts, String fileName) {
         StringBuilder csv = new StringBuilder();
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {
             csv.append(entry.getKey()).append(",").append(entry.getValue());
@@ -122,7 +122,7 @@ public class B3DescriptiveStatistics {
      *
      * @param lemmas A ConcurrentHashMap containing the lemmatised documents
      */
-    private void countWordInDocuments(ConcurrentHashMap<String, String> lemmas) {
+    void countWordInDocuments(ConcurrentHashMap<String, String> lemmas) {
         for (Map.Entry<String, String> entry : lemmas.entrySet()) {
             String lem = entry.getValue();
             String[] words = lem.split(" ");

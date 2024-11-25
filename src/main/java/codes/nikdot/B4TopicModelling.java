@@ -27,9 +27,8 @@ public class B4TopicModelling {
      * The key is a string identifier for each document, and the value is the lemmatised content of the document.
      */
     ConcurrentHashMap<String, String> lemmas = new ConcurrentHashMap<>();
-
-    private ParallelTopicModel model;
-
+    Object[][] modelTopWords;
+    ParallelTopicModel model;
     private String lemmaFile;
     private String topicModelFile;
 
@@ -43,7 +42,6 @@ public class B4TopicModelling {
         topicModelling.setLemmaFile("outputs/ComplexLemmas.json");
         topicModelling.setTopicModelFile("outputs/TopicModel.txt");
         topicModelling.startTopicModelling();
-        topicModelling.exportTopicModel();
     }
 
     public void setLemmaFile(String lemmaFile) {
@@ -64,7 +62,6 @@ public class B4TopicModelling {
         lemmas = json.getLemmasFromJSONStructure();
         saveLemmasToFlatFile(topicModelFile, lemmas);
         runTopicModelling(topicModelFile, 10, 8, 100);
-        exportTopicModel();
     }
 
     /**
@@ -73,7 +70,7 @@ public class B4TopicModelling {
      * @param flatFile The path to the flat file to save the lemmas
      * @param lemmas   A ConcurrentHashMap containing the lemmatised documents
      */
-    private void saveLemmasToFlatFile(String flatFile, ConcurrentHashMap<String, String> lemmas) {
+    void saveLemmasToFlatFile(String flatFile, ConcurrentHashMap<String, String> lemmas) {
         try (FileWriter writer = new FileWriter(flatFile)) {
             for (Map.Entry<String, String> entry : lemmas.entrySet()) {
                 writer.write(entry.getKey() + "\ten\t" + entry.getValue() + System.lineSeparator());
@@ -92,9 +89,8 @@ public class B4TopicModelling {
      * @param nThreads    The number of threads to use
      * @param nIterations The number of iterations to run
      */
-    private void runTopicModelling(String flatFile, int nTopics, int nThreads, int nIterations) {
+    void runTopicModelling(String flatFile, int nTopics, int nThreads, int nIterations) {
         ArrayList pipeList = new ArrayList();
-        // Pipes: tokenize, map to features
         pipeList.add(new CharSequence2TokenSequence(Pattern.compile("\\p{L}[\\p{L}\\p{P}]+\\p{L}")));
         pipeList.add(new TokenSequence2FeatureSequence());
 
@@ -124,28 +120,6 @@ public class B4TopicModelling {
         }
         System.out.println("Model estimated!");
         this.model = model;
-    }
-
-    private void exportTopicModel() {
-        String topicModelFile = lemmaFile.replace(".json", "_TopicModelResults.csv");
-        String columns = "topic,word1,word2,word3,word4,word5,word6,word7,word8,word9,word10";
-        Object[][] topWords = model.getTopWords(10);
-
-        try (FileWriter writer = new FileWriter(topicModelFile)) {
-            writer.append(columns);
-            writer.append(System.lineSeparator());
-            for (int topicNum = 0; topicNum < model.numTopics; topicNum++) {
-                String line = String.valueOf(topicNum);
-                for (int i = 0; i < 10; i++) {
-                    line = String.join(",", line, (String) topWords[topicNum][i]);
-                }
-                writer.append(line);
-                writer.append(System.lineSeparator());
-            }
-            System.out.println("Topic Model CSV file saved successfully!");
-        } catch (Exception e) {
-            System.out.println("Topic Model CSV file save failed!");
-            throw new RuntimeException(e);
-        }
+        this.modelTopWords = model.getTopWords(10);
     }
 }

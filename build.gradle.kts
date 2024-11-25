@@ -56,6 +56,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.14.1")
     implementation("org.slf4j:slf4j-nop:1.7.32")
     implementation("cc.mallet:mallet:2.0.8")
+    implementation("org.duckdb:duckdb_jdbc:1.1.3")
 }
 
 tasks.test {

@@ -125,7 +125,7 @@ public class B2Lemmatiser {
 
     void loadStopWords() {
         try {
-            stopWords = Files.readAllLines(Paths.get("./dropzone/stopwords-en.txt")).toArray(new String[0]);
+            stopWords = Files.readAllLines(Paths.get("stopwords/stopwords-en.txt")).toArray(new String[0]);
             System.out.println("Stop words loaded: " + stopWords.length);
         } catch (Exception e) {
             System.out.println("Error loading stop words");

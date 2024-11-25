@@ -2,6 +2,7 @@ package codes.nikdot;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 /**
@@ -25,6 +26,18 @@ public class Pipeline implements Runnable {
      */
     @Parameters(paramLabel = "OUTPUT FILE", description = "The file to write the output to.")
     String outputFile;
+
+    @Option(names = {"-c", "--output-csv"}, defaultValue = "false", description = "Output CSV file for Topic Modelling Results.")
+    boolean outputCSV;
+
+    @Option(names = {"-p", "--output-parquet"}, defaultValue = "false", description = "Output Parquet file for Topic Modelling Results.")
+    boolean outputParquet;
+
+    @Option(names = {"-d", "--output-duckdb"}, defaultValue = "false", description = "Output DuckDB file for Topic Modelling Results.")
+    boolean outputDuckDB;
+
+    @Option(names = {"-j", "--output-json"}, defaultValue = "false", description = "Output JSON file for Topic Modelling Results.")
+    boolean outputJSON;
 
     /**
      * The entry point of the application. It uses Picocli to parse the command-line arguments
@@ -69,7 +82,6 @@ public class Pipeline implements Runnable {
 
         System.out.println("Loading stop words...");
         lem.loadStopWords();
-
         lem.startLemmanisation();
 
         B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
@@ -84,5 +96,18 @@ public class Pipeline implements Runnable {
         topicModelling.startTopicModelling();
 
         System.out.println("Processing complete.");
+        System.out.println("Exporting results...");
+
+        B5ResultsExport results = new B5ResultsExport();
+        results.setFileTemplate(outputFile);
+        results.setModelTopWords(topicModelling.modelTopWords);
+        results.setOutputCSV(outputCSV);
+        results.setOutputParquet(outputParquet);
+        results.setOutputDuckDB(outputDuckDB);
+        results.setOutputJSON(outputJSON);
+
+        results.exportModelResults();
+
+        System.out.println("Export complete.");
     }
 }
