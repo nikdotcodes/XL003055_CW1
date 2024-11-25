@@ -79,17 +79,6 @@ public class B1TextLoader {
     }
 
     /**
-     * Counts the words in each document stored in the documents map.
-     * For each document, it calls the countWordsInSingleDocument method.
-     *
-     * @param documents A ConcurrentHashMap containing document identifiers as keys
-     *                  and document contents as values
-     */
-    public void countWordsInDocuments(ConcurrentHashMap<String, String> documents) {
-        documents.forEach(this::countWordsInSingleDocument);
-    }
-
-    /**
      * Counts the words in a single document and prints the result.
      *
      * @param key   The identifier of the document

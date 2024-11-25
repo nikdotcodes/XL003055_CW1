@@ -8,46 +8,86 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The B5ResultsExport class provides methods to export topic modeling results to various formats.
+ * It supports exporting to CSV, Parquet, DuckDB, and JSON formats.
+ */
 public class B5ResultsExport {
 
     private String fileTemplate;
-
     private boolean outputCSV;
     private boolean outputParquet;
     private boolean outputDuckDB;
     private boolean outputJSON;
-
     private Object[][] modelTopWords;
     private DuckDBConnection conn;
 
+    /**
+     * The main method to start the results export process.
+     *
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         System.out.println("Exporting results...");
     }
 
+    /**
+     * Sets the file template for the output files.
+     *
+     * @param fileTemplate The file template
+     */
     public void setFileTemplate(String fileTemplate) {
         this.fileTemplate = fileTemplate;
     }
 
+    /**
+     * Sets whether to output results in CSV format.
+     *
+     * @param outputCSV True to output in CSV format, false otherwise
+     */
     public void setOutputCSV(boolean outputCSV) {
         this.outputCSV = outputCSV;
     }
 
+    /**
+     * Sets whether to output results in Parquet format.
+     *
+     * @param outputParquet True to output in Parquet format, false otherwise
+     */
     public void setOutputParquet(boolean outputParquet) {
         this.outputParquet = outputParquet;
     }
 
+    /**
+     * Sets whether to output results in DuckDB format.
+     *
+     * @param outputDuckDB True to output in DuckDB format, false otherwise
+     */
     public void setOutputDuckDB(boolean outputDuckDB) {
         this.outputDuckDB = outputDuckDB;
     }
 
+    /**
+     * Sets whether to output results in JSON format.
+     *
+     * @param outputJSON True to output in JSON format, false otherwise
+     */
     public void setOutputJSON(boolean outputJSON) {
         this.outputJSON = outputJSON;
     }
 
+    /**
+     * Sets the top words for each topic in the model.
+     *
+     * @param modelTopWords A 2D array containing the top words for each topic
+     */
     public void setModelTopWords(Object[][] modelTopWords) {
         this.modelTopWords = modelTopWords;
     }
 
+    /**
+     * Exports the model results to the specified formats.
+     */
     public void exportModelResults() {
         System.out.println("Initialising working DuckDB...");
         String datePattern = "yyyyMMddHHmmss";
@@ -145,6 +185,4 @@ public class B5ResultsExport {
             e.printStackTrace();
         }
     }
-
-
 }

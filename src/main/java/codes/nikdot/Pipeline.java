@@ -27,15 +27,27 @@ public class Pipeline implements Runnable {
     @Parameters(paramLabel = "OUTPUT FILE", description = "The file to write the output to.")
     String outputFile;
 
+    /**
+     * Flag to indicate whether to output results in CSV format.
+     */
     @Option(names = {"-c", "--output-csv"}, defaultValue = "false", description = "Output CSV file for Topic Modelling Results.")
     boolean outputCSV;
 
+    /**
+     * Flag to indicate whether to output results in Parquet format.
+     */
     @Option(names = {"-p", "--output-parquet"}, defaultValue = "false", description = "Output Parquet file for Topic Modelling Results.")
     boolean outputParquet;
 
+    /**
+     * Flag to indicate whether to output results in DuckDB format.
+     */
     @Option(names = {"-d", "--output-duckdb"}, defaultValue = "false", description = "Output DuckDB file for Topic Modelling Results.")
     boolean outputDuckDB;
 
+    /**
+     * Flag to indicate whether to output results in JSON format.
+     */
     @Option(names = {"-j", "--output-json"}, defaultValue = "false", description = "Output JSON file for Topic Modelling Results.")
     boolean outputJSON;
 
@@ -51,14 +63,16 @@ public class Pipeline implements Runnable {
     }
 
     /**
-     * The main logic of the pipeline. It performs the following steps:<br>
-     * 1. Creates a temporary JSON file name by replacing the .txt extension of the input file with _temp.json.<br>
-     * 2. Initializes instances of B1TextLoader and B2Lemmatiser.<br>
-     * 3. Sets the input and output file paths for both the text loader and the lemmatiser.<br>
-     * 4. Prints a message indicating the start of processing.<br>
-     * 5. Loads the text file and saves its content to the temporary JSON file.<br>
-     * 6. Lemmatises the content of the temporary JSON file and saves the result to the output file.<br>
-     * 7. Prints a message indicating the completion of processing.
+     * The main logic of the pipeline. It performs the following steps:
+     * 1. Creates a temporary JSON file name by replacing the .txt extension of the input file with _temp.json.
+     * 2. Initializes instances of B1TextLoader and B2Lemmatiser.
+     * 3. Sets the input and output file paths for both the text loader and the lemmatiser.
+     * 4. Prints a message indicating the start of processing.
+     * 5. Loads the text file and saves its content to the temporary JSON file.
+     * 6. Lemmatises the content of the temporary JSON file and saves the result to the output file.
+     * 7. Generate descriptive statistics for the lemmatised content.
+     * 8. Perform topic modelling on the lemmatised content.
+     * 9. Export the results of the topic modelling to various formats based on the specified flags.
      */
     @Override
     public void run() {

@@ -18,15 +18,13 @@ import java.util.stream.Stream;
 public class B2Lemmatiser {
     /**
      * A ConcurrentHashMap to store the documents loaded from the JSON file.
-     * The key is a string identifier for each document, and the value is the
-     * content of the document.
+     * The key is a string identifier for each document, and the value is the content of the document.
      */
     ConcurrentHashMap<String, String> documents = new ConcurrentHashMap<>();
 
     /**
      * A ConcurrentHashMap to store the lemmatised documents.
-     * The key is a string identifier for each document, and the value is the
-     * lemmatised content of the document.
+     * The key is a string identifier for each document, and the value is the lemmatised content of the document.
      */
     ConcurrentHashMap<String, String> lemmatisedDocuments = new ConcurrentHashMap<>();
 
@@ -40,6 +38,9 @@ public class B2Lemmatiser {
      */
     private String outputFile;
 
+    /**
+     * An array of stop words to be excluded from the lemmatised documents.
+     */
     private String[] stopWords;
 
     /**
@@ -123,6 +124,10 @@ public class B2Lemmatiser {
         return String.join(" ", lemmas);
     }
 
+    /**
+     * Loads the stop words from a file.
+     * The stop words are used to filter out common words from the lemmatised documents.
+     */
     void loadStopWords() {
         try {
             stopWords = Files.readAllLines(Paths.get("stopwords/stopwords-en.txt")).toArray(new String[0]);

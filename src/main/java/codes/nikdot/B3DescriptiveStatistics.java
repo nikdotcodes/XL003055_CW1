@@ -30,8 +30,19 @@ public class B3DescriptiveStatistics {
      */
     ConcurrentHashMap<String, Integer> documentWordCounts = new ConcurrentHashMap<>();
 
+    /**
+     * The path to the CSV file for corpus word counts.
+     */
     private String corpusWordCountFile;
+
+    /**
+     * The path to the CSV file for document word counts.
+     */
     private String documentWordCountFile;
+
+    /**
+     * The path to the JSON file containing the lemmas.
+     */
     private String lemmasFile;
 
     /**
@@ -44,14 +55,29 @@ public class B3DescriptiveStatistics {
         descriptiveStatistics.startCreatingStatistics();
     }
 
+    /**
+     * Sets the path to the CSV file for corpus word counts.
+     *
+     * @param corpusWordCountFile The path to the CSV file for corpus word counts
+     */
     public void setCorpusWordCountFile(String corpusWordCountFile) {
         this.corpusWordCountFile = corpusWordCountFile;
     }
 
+    /**
+     * Sets the path to the CSV file for document word counts.
+     *
+     * @param documentWordCountFile The path to the CSV file for document word counts
+     */
     public void setDocumentWordCountFile(String documentWordCountFile) {
         this.documentWordCountFile = documentWordCountFile;
     }
 
+    /**
+     * Sets the path to the JSON file containing the lemmas.
+     *
+     * @param lemmasFile The path to the JSON file containing the lemmas
+     */
     public void setLemmasFile(String lemmasFile) {
         this.lemmasFile = lemmasFile;
     }
@@ -87,11 +113,7 @@ public class B3DescriptiveStatistics {
             String lem = entry.getValue();
             String[] words = lem.split(" ");
             for (String word : words) {
-                if (lemmaCounts.containsKey(word)) {
-                    lemmaCounts.put(word, lemmaCounts.get(word) + 1);
-                } else {
-                    lemmaCounts.put(word, 1);
-                }
+                lemmaCounts.merge(word, 1, Integer::sum);
             }
         }
     }

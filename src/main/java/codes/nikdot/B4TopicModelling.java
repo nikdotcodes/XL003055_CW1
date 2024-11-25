@@ -23,13 +23,29 @@ import java.util.regex.Pattern;
 public class B4TopicModelling {
 
     /**
-     * A ConcurrentHashMap to store the lemmatized documents.
+     * A ConcurrentHashMap to store the lemmatised documents.
      * The key is a string identifier for each document, and the value is the lemmatised content of the document.
      */
     ConcurrentHashMap<String, String> lemmas = new ConcurrentHashMap<>();
+
+    /**
+     * A 2D array to store the top words for each topic.
+     */
     Object[][] modelTopWords;
+
+    /**
+     * The ParallelTopicModel object to perform topic modeling.
+     */
     ParallelTopicModel model;
+
+    /**
+     * The path to the JSON file containing the lemmas.
+     */
     private String lemmaFile;
+
+    /**
+     * The path to the file where the topic model will be saved.
+     */
     private String topicModelFile;
 
     /**
@@ -44,10 +60,20 @@ public class B4TopicModelling {
         topicModelling.startTopicModelling();
     }
 
+    /**
+     * Sets the path to the JSON file containing the lemmas.
+     *
+     * @param lemmaFile The path to the JSON file containing the lemmas
+     */
     public void setLemmaFile(String lemmaFile) {
         this.lemmaFile = lemmaFile;
     }
 
+    /**
+     * Sets the path to the file where the topic model will be saved.
+     *
+     * @param topicModelFile The path to the file where the topic model will be saved
+     */
     public void setTopicModelFile(String topicModelFile) {
         this.topicModelFile = topicModelFile;
     }
