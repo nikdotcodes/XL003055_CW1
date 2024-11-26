@@ -5,6 +5,11 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * The Pipeline class is the main entry point for the pipeline application.
  * It uses the Picocli library to handle command-line arguments and orchestrates
@@ -76,6 +81,11 @@ public class Pipeline implements Runnable {
      */
     @Override
     public void run() {
+        String datePattern = "HH:mm:ss.SSS";
+        DateFormat dateFormat = new SimpleDateFormat(datePattern);
+        Date beginning = Calendar.getInstance().getTime();
+        String beginningAsString = dateFormat.format(beginning);
+
         String workingFile = inputFile.replace(".txt", "_temp.json");
         String corpusWordCountFile = outputFile.replace(".json", "_CorpusWordCount.csv");
         String documentWordCountFile = outputFile.replace(".json", "_DocumentWordCount.csv");
@@ -94,9 +104,15 @@ public class Pipeline implements Runnable {
         loader.loadTextFile();
         loader.saveDocumentsToJSON();
 
+        Date lemStart = Calendar.getInstance().getTime();
+        String lemStartAsString = dateFormat.format(lemStart);
+
         System.out.println("Loading stop words...");
         lem.loadStopWords();
         lem.startLemmanisation();
+
+        Date lemEnd = Calendar.getInstance().getTime();
+        String lemEndAsString = dateFormat.format(lemEnd);
 
         B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
         descriptiveStatistics.setLemmasFile(outputFile);
@@ -104,13 +120,22 @@ public class Pipeline implements Runnable {
         descriptiveStatistics.setDocumentWordCountFile(documentWordCountFile);
         descriptiveStatistics.startCreatingStatistics();
 
+        Date createStatisticsStart = Calendar.getInstance().getTime();
+        String createStatisticsStartAsString = dateFormat.format(createStatisticsStart);
+
         B4TopicModelling topicModelling = new B4TopicModelling();
         topicModelling.setLemmaFile(outputFile);
         topicModelling.setTopicModelFile(topicModelFile);
         topicModelling.startTopicModelling();
 
+        Date createStatisticsEnd = Calendar.getInstance().getTime();
+        String createStatisticsEndAsString = dateFormat.format(createStatisticsEnd);
+
         System.out.println("Processing complete.");
         System.out.println("Exporting results...");
+
+        Date exportStart = Calendar.getInstance().getTime();
+        String exportStartAsString = dateFormat.format(exportStart);
 
         B5ResultsExport results = new B5ResultsExport();
         results.setFileTemplate(outputFile);
@@ -122,6 +147,19 @@ public class Pipeline implements Runnable {
 
         results.exportModelResults();
 
+        Date exportEnd = Calendar.getInstance().getTime();
+        String exportEndAsString = dateFormat.format(exportEnd);
+
         System.out.println("Export complete.");
+        System.out.println("--------------------");
+        System.out.println("Pipeline Summary");
+        System.out.println("--------------------");
+        System.out.printf("Start: %s%n", beginningAsString);
+        System.out.printf("Text Loading: %s - %s%n", beginningAsString, lemStartAsString);
+        System.out.printf("Lemmatisation: %s - %s%n", lemStartAsString, lemEndAsString);
+        System.out.printf("Descriptive Statistics: %s - %s%n", createStatisticsStartAsString, createStatisticsEndAsString);
+        System.out.printf("Topic Modelling: %s - %s%n", createStatisticsEndAsString, exportStartAsString);
+        System.out.printf("Exporting Results: %s - %s%n", exportStartAsString, exportEndAsString);
+        System.out.printf("Total Time: %s%n", exportEnd.getTime() - beginning.getTime());
     }
 }

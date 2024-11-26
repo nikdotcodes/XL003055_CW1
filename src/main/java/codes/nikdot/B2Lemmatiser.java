@@ -87,8 +87,13 @@ public class B2Lemmatiser {
         jsonIO.loadJSONStructure(inputFile);
         documents = jsonIO.getDocumentsFromJSONStructure();
 
-        documents.forEach(2, (key, value) -> {
+        //documents.forEach((key, value) -> {
+        documents.forEach(1, (key, value) -> {
             System.out.println("Reading Document: " + key);
+            if(value == null) {
+                System.out.println("Document is null, skipping...");
+                return;
+            }
             String lemmanisedDoc = lemmaniseSingleDocument(value);
             ArrayList<String> allLems = Stream.of(lemmanisedDoc.toLowerCase()
                             .split(" "))
