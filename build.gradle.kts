@@ -1,3 +1,4 @@
+// Plugins used by Gradle to build the project
 plugins {
     id("com.gradleup.shadow") version "8.3.3"
     id("java")
@@ -5,6 +6,7 @@ plugins {
     id("application")
 }
 
+// Setting up the java version details and defining the entry point for the application (Pipeline.java)
 java {
     sourceCompatibility = JavaVersion.VERSION_22
     targetCompatibility = JavaVersion.VERSION_22
@@ -13,6 +15,7 @@ java {
     )
 }
 
+// Defining the tasks for the project, and the build commands used in the project
 tasks.named("distZip").configure {dependsOn("shadowJar")}
 tasks.named("distTar").configure {dependsOn("shadowJar")}
 tasks.named("startScripts").configure {dependsOn("shadowJar")}
@@ -39,10 +42,12 @@ application {
 
 group = "codes.nikdot"
 
+// The location of libraries used in the project
 repositories {
     mavenCentral()
 }
 
+// The dependencies used in the project
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
@@ -59,6 +64,7 @@ dependencies {
     implementation("org.duckdb:duckdb_jdbc:1.1.3")
 }
 
+// Test tasks for the project
 tasks.test {
     useJUnitPlatform()
 }

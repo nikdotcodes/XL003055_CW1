@@ -55,8 +55,8 @@ public class B4TopicModelling {
      */
     public static void main(String[] args) {
         B4TopicModelling topicModelling = new B4TopicModelling();
-        topicModelling.setLemmaFile("outputs/ComplexLemmas.json");
-        topicModelling.setTopicModelFile("outputs/TopicModel.txt");
+        topicModelling.setLemmaFile(args[0]);
+        topicModelling.setTopicModelFile(args[1]);
         topicModelling.startTopicModelling();
     }
 

@@ -15,9 +15,11 @@ import java.util.Date;
  * It uses the Picocli library to handle command-line arguments and orchestrates
  * the process of loading a text file, lemmatising its content, and saving the output to a JSON file.
  */
-@Command(name = "pipeline", mixinStandardHelpOptions = true, version = "pipeline 2024.1002", description = "Runs through " +
-        "a series of pipeline blocks (B1 & B2) to read documents from a .txt file, lemmatise & tokenise the text, and " +
-        "outputs the original & changes to a json file.")
+@Command(name = "pipeline", mixinStandardHelpOptions = true, version = "pipeline 2024.1002",
+        description = "Runs through a series of pipeline blocks to read documents from a .txt file, lemmatise " +
+        "& tokenise the text, produce descriptive statistics on the file loaded in, and perform topic modelling on the " +
+        "lemmatised text. The output is saved in various formats based on the flags provided. Default files produced " +
+        "are - CorpusWordCount.csv - DocumentWordCount.csv - TopicData.txt alongside any flagged output formats.")
 public class Pipeline implements Runnable {
 
     /**

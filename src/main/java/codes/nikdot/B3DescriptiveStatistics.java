@@ -52,6 +52,9 @@ public class B3DescriptiveStatistics {
      */
     public static void main(String[] args) {
         B3DescriptiveStatistics descriptiveStatistics = new B3DescriptiveStatistics();
+        descriptiveStatistics.setLemmasFile(args[0]);
+        descriptiveStatistics.setCorpusWordCountFile(args[1]);
+        descriptiveStatistics.setDocumentWordCountFile(args[2]);
         descriptiveStatistics.startCreatingStatistics();
     }
 

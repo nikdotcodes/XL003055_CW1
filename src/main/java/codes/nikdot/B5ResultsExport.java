@@ -27,8 +27,14 @@ public class B5ResultsExport {
      *
      * @param args Command line arguments
      */
-    public static void main(String[] args) {
-        System.out.println("Exporting results...");
+    public static void main(Object[] args) {
+        B5ResultsExport results = new B5ResultsExport();
+        results.setFileTemplate(args[0].toString());
+        results.setModelTopWords((Object[][]) args[1]);
+        results.setOutputCSV(args[2].toString().equals("true"));
+        results.setOutputParquet(args[3].toString().equals("true"));
+        results.setOutputDuckDB(args[4].toString().equals("true"));
+        results.setOutputJSON(args[5].toString().equals("true"));
     }
 
     /**
