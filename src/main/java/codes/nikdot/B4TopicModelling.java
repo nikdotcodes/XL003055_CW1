@@ -87,7 +87,7 @@ public class B4TopicModelling {
         json.loadJSONStructure(lemmaFile);
         lemmas = json.getLemmasFromJSONStructure();
         saveLemmasToFlatFile(topicModelFile, lemmas);
-        runTopicModelling(topicModelFile, 10, 8, 100);
+        runTopicModelling(topicModelFile, 10, 8, 2500);
     }
 
     /**

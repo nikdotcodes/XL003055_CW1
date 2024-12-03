@@ -87,7 +87,6 @@ public class B2Lemmatiser {
         jsonIO.loadJSONStructure(inputFile);
         documents = jsonIO.getDocumentsFromJSONStructure();
 
-        //documents.forEach((key, value) -> {
         documents.forEach(1, (key, value) -> {
             System.out.println("Reading Document: " + key);
             if(value == null) {
